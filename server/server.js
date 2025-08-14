@@ -1,30 +1,37 @@
-const express = require('express');
+const express = require('express');  // Chỉ cần khai báo một lần
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth');
 
-// Tạo ứng dụng Express
 const app = express();
 const server = http.createServer(app);
-
-// Cấu hình socket.io
 const io = socketIo(server);
 
-// Thiết lập middleware để phục vụ tệp tĩnh từ thư mục client
+// Cấu hình middleware để phục vụ tệp tĩnh từ thư mục client
 app.use(express.static(path.join(__dirname, '..', 'client')));
+
+// Cấu hình middleware để xử lý JSON request body
+app.use(express.json());
+
+// Sử dụng các route đăng ký và đăng nhập
+app.use('/api/auth', authRoutes);
+
+// Kết nối MongoDB
+mongoose.connect('mongodb://localhost:27017/chat-app', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log(err));
 
 // Xử lý khi có người dùng kết nối
 io.on('connection', (socket) => {
     console.log('Một người dùng đã kết nối');
     
-    // Lắng nghe tin nhắn từ client
     socket.on('message', (msg) => {
         console.log('Tin nhắn nhận được:', msg);
-        // Gửi lại tin nhắn cho tất cả các client khác
         io.emit('message', msg);
     });
 
-    // Xử lý ngắt kết nối
     socket.on('disconnect', () => {
         console.log('Người dùng đã ngắt kết nối');
     });
@@ -32,10 +39,10 @@ io.on('connection', (socket) => {
 
 // Cấu hình route cho trang chủ
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));  // Đảm bảo đường dẫn đúng
+    res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 });
 
 // Chạy server trên cổng 3000
-server.listen(3005, () => {
+server.listen(3000, () => {
     console.log('Server đang chạy trên http://localhost:3000');
 });
