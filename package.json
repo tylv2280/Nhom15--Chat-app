@@ -1,24 +1,18 @@
 {
-  "name": "nhom15--chat-app",
+  "name": "chat-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Real-time chat app with Express and Socket.io",
+  "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tylv2280/Nhom15--Chat-app.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tylv2280/Nhom15--Chat-app/issues"
-  },
-  "homepage": "https://github.com/tylv2280/Nhom15--Chat-app#readme",
   "dependencies": {
-    "express": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.23",
     "socket.io": "^4.8.1"
-  }
+  },
+  "author": "Your Name",
+  "license": "MIT"
 }
