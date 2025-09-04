@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Đăng ký</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:24px}
+    .auth-wrap{max-width:520px;margin:0 auto}
+    .auth-wrap input,.auth-wrap button{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ddd}
+    .auth-wrap button{background:#f6f6f6;cursor:pointer;position:relative;z-index:1}
+    .auth-wrap button:disabled{opacity:.6;cursor:not-allowed}
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+    <h1>Đăng ký</h1>
+
+    <form id="registerForm" autocomplete="on" novalidate>
+      <input id="username" name="username" placeholder="Tên người dùng" required>
+      <input id="email" name="email" placeholder="Email" type="email" required>
+      <input id="password" name="password" type="password" placeholder="Mật khẩu" required minlength="4">
+      <button id="btnReg" type="submit">Đăng ký</button>
+    </form>
+
+    <p>Bạn đã có tài khoản? <a href="/index.html">Đăng nhập</a></p>
+  </div>
+
+  <script src="/js/auth-register.js" defer></script>
+</body>
+</html>

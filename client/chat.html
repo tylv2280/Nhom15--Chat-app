@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div id="appBanner" style="display:none" class="banner">
+    <span id="bannerText">Đang khởi tạo…</span>
+    <span class="banner-actions">
+      <button id="btnReload" class="btn btn-sm">Tải lại dữ liệu</button>
+      <button id="btnRelogin" class="btn btn-sm">Đăng nhập lại</button>
+    </span>
+  </div>
+  <div id="loading" class="loading" style="display:none">Đang tải dữ liệu…</div>
+
+  <div class="container">
+    <aside class="sidebar">
+      <section class="card">
+        <div class="row between">
+          <h3 class="section-title">Tìm người dùng</h3>
+          <button id="btnTheme" class="btn btn-sm">🌙</button>
+        </div>
+        <input id="qUser" class="input" placeholder="Nhập tên...">
+        <button id="btnSearchUser" class="btn">Tìm</button>
+        <ul id="searchUsers" class="list"></ul>
+      </section>
+<section class="card">
+  <h3 class="section-title">Tài khoản của tôi</h3>
+  <div id="myInfo" class="col"></div>
+</section>
+
+      <section class="card">
+        <h3 class="section-title">Hội thoại gần đây</h3>
+        <div id="recentList" class="col"></div>
+      </section>
+
+      <section class="card">
+        <h3 class="section-title">Bạn bè</h3>
+        <div id="friends" class="col"></div>
+      </section>
+
+      <section class="card">
+        <h3 class="section-title">Nhóm của tôi</h3>
+        <ul id="groups" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <h3 class="section-title">Tạo nhóm</h3>
+        <input id="groupName" class="input" placeholder="Tên nhóm">
+        <input id="groupMembers" class="input" placeholder="Thành viên: id1,id2,...">
+        <div class="col">
+          <label class="last-seen">Chọn bạn bè để thêm vào nhóm:</label>
+          <div id="friendCheckboxList"></div>
+        </div>
+        <button id="btnCreateGroup" class="btn">Tạo nhóm</button>
+      </section>
+
+      <section class="card">
+        <h3 class="section-title">Tham gia nhóm</h3>
+        <input id="joinGroupId" class="input" placeholder="Nhập groupId hoặc dán mã mời">
+        <div class="row" style="gap:8px">
+          <button id="btnJoinGroup" class="btn">Tham gia bằng ID</button>
+          <button id="btnJoinInvite" class="btn">Tham gia bằng mã mời</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="card main">
+      <div class="row between center">
+        <h3 id="roomTitle" class="section-title">Chưa chọn cuộc trò chuyện</h3>
+        <div class="row" style="gap:8px;align-items:center">
+          <label class="last-seen"><input type="checkbox" id="enterSend"> Enter để gửi</label>
+          <button id="btnMulti" class="btn btn-sm">Chọn nhiều</button>
+          <button id="btnPinnedToggle" class="btn btn-sm">⭐</button>
+          <button id="soundToggle" class="btn btn-sm">🔔</button>
+          <button id="btnMembers" class="btn" style="display:none;">Thành viên</button>
+          <button id="btnInvite" class="btn" style="display:none;">Tạo mã mời</button>
+          <button id="btnLeaveGroup" class="btn" style="display:none;">Rời nhóm</button>
+          <button id="btnToday" class="btn btn-sm">Hôm nay</button>
+          <button id="btnLogout" class="btn btn-sm">Đăng xuất</button>
+        </div>
+      </div>
+
+      <div class="row" style="gap:6px;margin-bottom:8px;">
+        <input id="searchBox" class="input" placeholder="Tìm trong cuộc trò chuyện...">
+        <button id="btnSearchMsg" class="btn">Tìm</button>
+        <button id="btnHardReload" class="btn btn-sm">Làm mới</button>
+      </div>
+
+      <div id="searchResults" class="card" style="display:none;margin-bottom:8px;">
+        <h4>Kết quả tìm kiếm</h4>
+        <ul id="searchList" class="list"></ul>
+      </div>
+
+      <div id="pinnedPanel" class="card" style="display:none;margin-bottom:8px;">
+        <h4>Tin đã ghim</h4>
+        <ul id="pinnedList" class="list"></ul>
+      </div>
+
+      <div id="messages" class="messages"></div>
+      <button id="btnLoadMore" class="btn" style="display:none;margin-top:8px;">Tải thêm tin cũ</button>
+      <button id="btnScrollBottom" class="btn btn-sm">⬇ Xuống cuối</button>
+      <div id="typing" class="last-seen" style="min-height:16px;"></div>
+
+      <div id="replyBar" class="row replybar" style="display:none;">
+        <div id="replyInfo" style="flex:1"></div>
+        <button id="replyCancel" class="btn btn-sm">✕</button>
+      </div>
+
+      <div class="row composer">
+        <textarea id="msgInput" class="input msgarea" rows="2" placeholder="Nhập tin nhắn..."></textarea>
+        <div id="mentionList" class="mention"></div>
+        <button id="emojiBtn" class="btn">🙂</button>
+        <div id="emojiPanel" class="emojipanel"></div>
+        <input id="fileInput" type="file" multiple class="input filepick">
+        <button id="btnSend" class="btn">Gửi</button>
+      </div>
+      <div id="selectedFiles" class="last-seen"></div>
+
+      <div id="bulkBar" class="row bulkbar" style="display:none;">
+        <span class="last-seen" id="bulkCount">0 đã chọn</span>
+        <button id="bulkPin" class="btn btn-sm">⭐ Ghim</button>
+        <button id="bulkCopy" class="btn btn-sm">📋 Copy</button>
+        <button id="bulkForward" class="btn btn-sm">↪ Chuyển tiếp</button>
+        <button id="bulkHide" class="btn btn-sm">Ẩn</button>
+      </div>
+
+      <!-- ✅ Panel quản lý nhóm -->
+      <div id="membersPanel" class="card" style="display:none;margin-top:12px;">
+        <h4>Thành viên (<span id="memberCount">0</span>)</h4>
+        <ul id="membersList" class="list"></ul>
+
+        <div class="row" style="gap:6px;margin-top:8px;">
+          <input id="newMember" class="input" placeholder="Nhập userId để thêm">
+          <button id="btnAddMember" class="btn btn-sm">Thêm</button>
+        </div>
+
+        <div class="row" style="gap:6px;margin-top:8px;">
+          <input id="removeMember" class="input" placeholder="Nhập userId để xoá">
+          <button id="btnRemoveMember" class="btn btn-sm">Xoá</button>
+        </div>
+
+        <div class="row" style="gap:6px;margin-top:8px;">
+          <input id="inviteCode" class="input" placeholder="Nhập mã mời để tham gia">
+          <button id="btnJoinByCode" class="btn btn-sm">Tham gia</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Lightbox xem ảnh -->
+  <div id="lightbox" class="lightbox" style="display:none">
+    <img id="lightboxImg" alt="">
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/enhance.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
