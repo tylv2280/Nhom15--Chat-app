@@ -16,5 +16,5 @@ const connectDB = async () => {
     process.exit(1); // Dừng server nếu không kết nối được
   }
 };
-
 module.exports = connectDB;
+
